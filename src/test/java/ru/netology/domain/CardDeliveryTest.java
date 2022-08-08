@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 import java.time.Duration;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -27,33 +28,33 @@ public class CardDeliveryTest {
         Configuration.holdBrowserOpen = true;
         open("http://localhost:9999");
         $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-        $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+        $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
         $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
         $("[data-test-id='phone'] input").setValue("+79516827144");
         $(withText("Я соглашаюсь с условиями обработки и")).click();
         $x("//*[text()=\"Забронировать\"]").click();
-        $("[data-test-id=notification]")
-                .shouldBe(Condition.text("Успешно! Встреча успешно забронирована на " + shouldChooseDate(minDaysToAdd)), Duration.ofSeconds(15));
+        $("[data-test-id='notification']")
+                .shouldBe(text("Успешно! Встреча успешно забронирована на " + shouldChooseDate(minDaysToAdd)), Duration.ofSeconds(15));
     }
 
     @Nested
     @DisplayName("City validation")
-    class cityValidation {
+    class CityValidation {
         @Test
         void shouldChooseCityNotFromTheList() {
             int minDaysToAdd = 3;
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Гатчина");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=city] .input__sub")
-                    .shouldBe(Condition.text("Доставка в выбранный город недоступна "));
+            $("[data-test-id='city'].input_invalid .input__sub")
+                    .shouldBe(text("Доставка в выбранный город недоступна "));
         }
 
         @Test
@@ -62,14 +63,14 @@ public class CardDeliveryTest {
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Saint-Petersburg");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=city] .input__sub")
-                    .shouldBe(Condition.text("Доставка в выбранный город недоступна "));
+            $("[data-test-id='city'].input_invalid .input__sub")
+                    .shouldBe(text("Доставка в выбранный город недоступна "));
         }
 
         @Test
@@ -78,14 +79,14 @@ public class CardDeliveryTest {
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("121212");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=city] .input__sub")
-                    .shouldBe(Condition.text("Доставка в выбранный город недоступна "));
+            $("[data-test-id='city'].input_invalid .input__sub")
+                    .shouldBe(text("Доставка в выбранный город недоступна "));
         }
 
         @Test
@@ -93,34 +94,34 @@ public class CardDeliveryTest {
             int minDaysToAdd = 3;
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=city] .input__sub")
-                    .shouldBe(Condition.text("Поле обязательно для заполнения "));
+            $("[data-test-id='city'].input_invalid .input__sub")
+                    .shouldBe(text("Поле обязательно для заполнения "));
         }
     }
 
     @Nested
     @DisplayName("Date validation")
-    class dateValidation {
+    class DateValidation {
         @Test
         void shouldChooseDateInPast() {
             int minDaysToAdd = -3;
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=date] .input__sub")
-                    .shouldBe(Condition.text("Заказ на выбранную дату невозможен"));
+            $("[data-test-id='date'] .input_invalid .input__sub")
+                    .shouldBe(text("Заказ на выбранную дату невозможен"));
         }
 
         @Test
@@ -129,14 +130,14 @@ public class CardDeliveryTest {
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=date] .input__sub")
-                    .shouldBe(Condition.text("Заказ на выбранную дату невозможен"));
+            $("[data-test-id='date'] .input_invalid .input__sub")
+                    .shouldBe(text("Заказ на выбранную дату невозможен"));
         }
 
         @Test
@@ -144,33 +145,33 @@ public class CardDeliveryTest {
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=date] .input__sub")
-                    .shouldBe(Condition.text("Неверно введена дата"));
+            $("[data-test-id='date'] .input_invalid .input__sub")
+                    .shouldBe(text("Неверно введена дата"));
         }
     }
 
     @Nested
     @DisplayName("Name validation")
-    class nameValidation {
+    class NameValidation {
         @Test
         void shouldSetLatinName() {
             int minDaysToAdd = 3;
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Аlex Oxlade-Chamberlain");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=name] .input__sub")
-                    .shouldBe(Condition.text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+            $("[data-test-id='name'].input_invalid .input__sub")
+                    .shouldBe(text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
         }
 
         @Test
@@ -179,14 +180,14 @@ public class CardDeliveryTest {
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("13245766612");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=name] .input__sub")
-                    .shouldBe(Condition.text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+            $("[data-test-id='name'].input_invalid .input__sub")
+                    .shouldBe(text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
         }
 
         @Test
@@ -195,14 +196,14 @@ public class CardDeliveryTest {
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Ы");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=notification]")
-                    .shouldBe(Condition.text("Успешно! Встреча успешно забронирована на " + shouldChooseDate(minDaysToAdd)), Duration.ofSeconds(15));
+            $("[data-test-id='notification']")
+                    .shouldBe(text("Успешно! Встреча успешно забронирована на " + shouldChooseDate(minDaysToAdd)), Duration.ofSeconds(15));
         }
 
         @Test
@@ -211,33 +212,33 @@ public class CardDeliveryTest {
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=name] .input__sub")
-                    .shouldBe(Condition.text("Поле обязательно для заполнения"));
+            $("[data-test-id='name'].input_invalid .input__sub")
+                    .shouldBe(text("Поле обязательно для заполнения"));
         }
     }
 
     @Nested
     @DisplayName("Phone Validation")
-    class phoneValidation {
+    class PhoneValidation {
         @Test
         void shouldSetPhoneWithWhitespaces() {
             int minDaysToAdd = 3;
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("+7 951 682 71 44");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=phone] .input__sub")
-                    .shouldBe(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+            $("[data-test-id='phone'].input_invalid .input__sub")
+                    .shouldBe(text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
         }
 
         @Test
@@ -246,14 +247,14 @@ public class CardDeliveryTest {
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("6827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=phone] .input__sub")
-                    .shouldBe(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+            $("[data-test-id='phone'].input_invalid .input__sub")
+                    .shouldBe(text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
         }
 
         @Test
@@ -262,14 +263,14 @@ public class CardDeliveryTest {
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("682714468271446827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=phone] .input__sub")
-                    .shouldBe(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+            $("[data-test-id='phone'].input_invalid .input__sub")
+                    .shouldBe(text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
         }
 
         @Test
@@ -278,53 +279,53 @@ public class CardDeliveryTest {
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=phone] .input__sub")
-                    .shouldBe(Condition.text("Поле обязательно для заполнения"));
+            $("[data-test-id='phone'].input_invalid .input__sub")
+                    .shouldBe(text("Поле обязательно для заполнения"));
         }
     }
 
     @Nested
     @DisplayName("Checkbox")
-    class checkboxValidation {
+    class CheckboxValidation {
         @Test
         void shouldNoCheckbox() {
             int minDaysToAdd = 3;
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=agreement].input_invalid .checkbox__text")
-                    .shouldBe(Condition.text("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
+            $("[data-test-id='agreement'].input_invalid .checkbox__text")
+                    .shouldBe(text("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
         }
     }
 
     @Nested
     @DisplayName("Second task")
-    class secondTask {
+    class SecondTask {
         @Test
         void shouldChooseCityByFirstLetters() {
             int minDaysToAdd = 3;
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Са");
-            $(byText("Санкт-Петербург")).click();
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $$x("//span[@class='menu-item__control']").get(8).click();
+            $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+            $("[data-test-id='date'] input").setValue(shouldChooseDate(minDaysToAdd));
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=notification]")
-                    .shouldBe(Condition.text("Успешно! Встреча успешно забронирована на " + shouldChooseDate(minDaysToAdd)), Duration.ofSeconds(15));
+            $("[data-test-id='notification']")
+                    .shouldBe(text("Успешно! Встреча успешно забронирована на " + shouldChooseDate(minDaysToAdd)), Duration.ofSeconds(15));
         }
 
         @Test
@@ -333,13 +334,18 @@ public class CardDeliveryTest {
             Configuration.holdBrowserOpen = true;
             open("http://localhost:9999");
             $x("//input[@placeholder='Город']").setValue("Санкт-Петербург");
-            $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-            $("[data-test-id=date] input").setValue(shouldChooseDate(minDaysToAdd));
+            $("[data-test-id='date'] .input__icon").click();
+            LocalDate today = LocalDate.now();
+            LocalDate overWeek = LocalDate.now().plusDays(minDaysToAdd);
+            if (today.getMonth() != overWeek.getMonth()) {
+                $x("//*[@data-step='1']").click();
+            }
+            $$("tr td").findBy(text(String.valueOf(overWeek.getDayOfMonth()))).click();
             $("[data-test-id='name'] input").setValue("Алекс Окслейд-Чемберлен");
             $("[data-test-id='phone'] input").setValue("+79516827144");
             $(withText("Я соглашаюсь с условиями обработки и")).click();
             $x("//*[text()=\"Забронировать\"]").click();
-            $("[data-test-id=notification]")
+            $("[data-test-id='notification']")
                     .shouldBe(Condition.text("Успешно! Встреча успешно забронирована на " + shouldChooseDate(minDaysToAdd)), Duration.ofSeconds(15));
         }
     }
